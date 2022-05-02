@@ -20,7 +20,7 @@ public func startGame<Question, Answer: Equatable, R: Router>(questions:[Questio
     return Game(flow: flow)
 }
 
-private func scoring<Question: Hashable, Answer: Equatable>(answers: [Question: Answer], correctAnswers: [Question: Answer]) -> Int {
+private func scoring<Question, Answer: Equatable>(answers: [Question: Answer], correctAnswers: [Question: Answer]) -> Int {
     return answers.reduce(0) { (score, tuple) in
         return score + (correctAnswers[tuple.key] == tuple.value ? 1 : 0)
     }
