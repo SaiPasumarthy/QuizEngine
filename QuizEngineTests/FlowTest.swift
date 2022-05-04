@@ -10,7 +10,6 @@ import XCTest
 @testable import QuizEngine
 
 class FlowTest: XCTestCase {
-    private let delegate = DelegateSpy()
 
     func test_start_withNoQuestions_doesNotDelegateQuestionHandling() {
         makeSUT(questions: []).start()
@@ -101,9 +100,19 @@ class FlowTest: XCTestCase {
     
     // MARK: Helpers
     
+    private let delegate = DelegateSpy()
     
-    private func makeSUT(questions:[String], scoring: @escaping ([String: String]) -> Int = {_ in 0}) -> Flow<String, String, DelegateSpy> {
-        return Flow(questions: questions, router: delegate, scoring: scoring)
+    private weak var weakSUT: Flow<DelegateSpy>? = nil
+    
+    private func makeSUT(questions:[String], scoring: @escaping ([String: String]) -> Int = {_ in 0}) -> Flow<DelegateSpy> {
+        let sut = Flow(questions: questions, router: delegate, scoring: scoring)
+        weakSUT = sut
+        return sut
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        XCTAssertNil(weakSUT, "Memory leak detected. Weak reference to the SUT instance is not nil")
     }
     
     private class DelegateSpy: Router, QuizDelegate {
