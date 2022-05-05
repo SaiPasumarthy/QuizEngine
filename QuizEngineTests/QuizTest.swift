@@ -7,21 +7,7 @@
 
 import Foundation
 import XCTest
-@testable import QuizEngine
-
-final class Quiz {
-    private let flow: AnyObject
-    
-    private init(flow: AnyObject) {
-        self.flow = flow
-    }
-    
-    static func start<Question, Answer: Equatable, Delegate: QuizDelegate>(questions:[Question], delegate: Delegate, correctAnswers: [Question: Answer]) -> Quiz where Delegate.Question == Question, Delegate.Answer == Answer {
-        let flow = Flow(questions: questions, delegate: delegate, scoring: { scoring(answers: $0, correctAnswers: correctAnswers)})
-        flow.start()
-        return Quiz(flow: flow)
-    }
-}
+import QuizEngine
 
 class QuizTest: XCTestCase {
     private let delegate = DelegateSpy()
@@ -56,24 +42,16 @@ class QuizTest: XCTestCase {
         XCTAssertEqual(delegate.routedResult!.score, 2)
     }
     
-    private class DelegateSpy: Router, QuizDelegate {
+    private class DelegateSpy: QuizDelegate {
         var answerCallback:(String) -> Void = {_ in }
         var routedResult:Result<String, String>?
         
         func handle(question: String, answerCallback: @escaping (String) -> Void) {
             self.answerCallback = answerCallback
         }
-        
-        func routeTo(question: String, answerCallback: @escaping (String) -> Void) {
-            handle(question: question, answerCallback: answerCallback)
-        }
-        
+     
         func handle(result:Result<String, String>) {
             routedResult = result
-        }
-        
-        func routeTo(result: Result<String, String>) {
-            handle(result: result)
         }
     }
 }
