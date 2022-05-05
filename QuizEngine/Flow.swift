@@ -28,7 +28,6 @@ class Flow<Delegate: QuizDelegate> {
             delegate.answer(for: firstQuestion, completion: nextCallback(from: firstQuestion))
         } else {
             delegate.didCompleteQuiz(withAnswers: newAnswers)
-            delegate.handle(result: result())
         }
     }
     
@@ -46,7 +45,6 @@ class Flow<Delegate: QuizDelegate> {
                 delegate.answer(for: nextQuestion, completion: nextCallback(from: nextQuestion))
             } else {
                 delegate.didCompleteQuiz(withAnswers: newAnswers)
-                delegate.handle(result: result())
             }
         }
     }
