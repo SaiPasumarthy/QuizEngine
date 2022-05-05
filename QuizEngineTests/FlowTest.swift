@@ -105,7 +105,7 @@ class FlowTest: XCTestCase {
     private weak var weakSUT: Flow<DelegateSpy>? = nil
     
     private func makeSUT(questions:[String], scoring: @escaping ([String: String]) -> Int = {_ in 0}) -> Flow<DelegateSpy> {
-        let sut = Flow(questions: questions, router: delegate, scoring: scoring)
+        let sut = Flow(questions: questions, delegate: delegate, scoring: scoring)
         weakSUT = sut
         return sut
     }
@@ -115,7 +115,7 @@ class FlowTest: XCTestCase {
         XCTAssertNil(weakSUT, "Memory leak detected. Weak reference to the SUT instance is not nil")
     }
     
-    private class DelegateSpy: Router, QuizDelegate {
+    private class DelegateSpy: QuizDelegate {
         var handledQuestions: [String] = []
         var answerCallback:(String) -> Void = {_ in }
         var handledResult:Result<String, String>?
@@ -127,14 +127,6 @@ class FlowTest: XCTestCase {
         
         func handle(result: Result<String, String>) {
             handledResult = result
-        }
-        
-        func routeTo(question: String, answerCallback: @escaping (String) -> Void) {
-            handle(question: question, answerCallback: answerCallback)
-        }
-        
-        func routeTo(result:Result<String, String>) {
-            handle(result: result)
         }
     }
 }
