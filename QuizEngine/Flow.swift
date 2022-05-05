@@ -38,7 +38,7 @@ class Flow<Delegate: QuizDelegate> {
     private func routeNext(_ question: Question, _ answer: Answer) {
         if let currentQuestionIndex = questions.index(of: question) {
             answers[question] = answer
-            newAnswers.append((question, answer))
+            newAnswers.replaceOrInsert((question, answer), currentQuestionIndex)
             let nextQuestionIndex = currentQuestionIndex + 1
             if nextQuestionIndex < questions.count {
                 let nextQuestion = questions[nextQuestionIndex]
@@ -51,5 +51,15 @@ class Flow<Delegate: QuizDelegate> {
     
     private func result() -> Result<Question, Answer> {
         return Result(answers: answers, score: scoring(answers))
+    }
+}
+
+extension Array {
+    mutating func replaceOrInsert(_ element: Element, _ index: Index) {
+        if index < count {
+            remove(at: index)
+        }
+        
+        insert(element, at: index)
     }
 }
