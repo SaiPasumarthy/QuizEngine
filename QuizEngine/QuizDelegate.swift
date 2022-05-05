@@ -19,7 +19,7 @@ public protocol QuizDelegate {
 }
 
 #warning("Delete is at some point!")
-extension QuizDelegate {
+public extension QuizDelegate {
     func didCompleteQuiz(withAnswers: [(question: Question, answer: Answer)]) {
         
     }

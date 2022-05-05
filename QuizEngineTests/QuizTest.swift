@@ -53,9 +53,5 @@ class QuizTest: XCTestCase {
         func handle(result:Result<String, String>) {
             routedResult = result
         }
-        
-        func didCompleteQuiz(withAnswers: [(question: String, answer: String)]) {
-            
-        }
     }
 }
