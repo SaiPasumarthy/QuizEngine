@@ -108,28 +108,9 @@ class FlowTest: XCTestCase {
         return sut
     }
     
-    private func assertEqual(a1: [(String, String)], a2: [(String, String)], file: StaticString = #filePath, line: UInt = #line) {
-        XCTAssertTrue(a1.elementsEqual(a2, by: ==), "\(a1) is not equal \(a2)", file: file, line: line)
-    }
-    
     override func tearDown() {
         super.tearDown()
         XCTAssertNil(weakSUT, "Memory leak detected. Weak reference to the SUT instance is not nil")
-    }
-    
-    private class DelegateSpy: QuizDelegate {
-        var questionsAsked: [String] = []
-        var answerCompletions:[(String) -> Void] = []
-        var completedQuizzes: [[(question: String, answer: String)]] = []
-        
-        func answer(for question: String, completion: @escaping (String) -> Void) {
-            questionsAsked.append(question)
-            self.answerCompletions.append(completion)
-        }
-        
-        func didCompleteQuiz(withAnswers answers: [(question: String, answer: String)]) {
-            self.completedQuizzes.append(answers)
-        }
     }
 }
 

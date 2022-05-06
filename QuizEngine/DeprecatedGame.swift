@@ -24,6 +24,12 @@ public class Game<Question, Answer, R: Router> {
 }
 
 @available(*, deprecated)
+public struct Result<Question: Hashable, Answer> {
+    public var answers: [Question: Answer]
+    public var score: Int
+}
+
+@available(*, deprecated)
 public func startGame<Question, Answer: Equatable, R: Router>(questions:[Question], router: R, correctAnswers: [Question: Answer]) -> Game<Question, Answer, R> where R.Question == Question, R.Answer == Answer {
     let flow = Flow(questions: questions, delegate: QuizDelegateToRouterAdapter(router, correctAnswers))
     flow.start()
