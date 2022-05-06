@@ -17,10 +17,3 @@ public protocol QuizDelegate {
     @available(*, deprecated, message: "use didCompleteQuiz method instead")
     func handle(result:Result<Question, Answer>)
 }
-
-#warning("Delete is at some point!")
-public extension QuizDelegate {
-    func didCompleteQuiz(withAnswers: [(question: Question, answer: Answer)]) {
-        
-    }
-}
