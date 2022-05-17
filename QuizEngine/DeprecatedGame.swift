@@ -17,9 +17,9 @@ public protocol Router {
 
 @available(*, deprecated, message: "use Quiz")
 public class Game<Question, Answer, R: Router> {
-    let flow: AnyObject
-    init(flow: AnyObject) {
-        self.flow = flow
+    let quiz: Quiz
+    init(quiz: Quiz) {
+        self.quiz = quiz
     }
 }
 
@@ -31,9 +31,9 @@ public struct Result<Question: Hashable, Answer> {
 
 @available(*, deprecated, message: "use Quiz.start")
 public func startGame<Question, Answer: Equatable, R: Router>(questions:[Question], router: R, correctAnswers: [Question: Answer]) -> Game<Question, Answer, R> where R.Question == Question, R.Answer == Answer {
-    let flow = Flow(questions: questions, delegate: QuizDelegateToRouterAdapter(router, correctAnswers))
-    flow.start()
-    return Game(flow: flow)
+    let adapter = QuizDelegateToRouterAdapter(router, correctAnswers)
+    let quiz = Quiz.start(questions: questions, delegate: adapter)
+    return Game(quiz: quiz)
 }
 
 @available(*, deprecated, message: "remove along with deprecated game types")
